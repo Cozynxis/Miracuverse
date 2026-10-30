@@ -113,7 +113,9 @@ def main():
                 time.sleep(1)
             except Exception as exc:
                 print(f"Season {season}: {exc}", flush=True)
-    if not result:\n        raise RuntimeError("No end cards found. Keeping existing JSON; check Fandom response and gallery markup.")\n    OUTPUT.write_text(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n", "utf-8")
+    if not result:
+        raise RuntimeError("No end cards found. Keeping existing JSON; check Fandom response and gallery markup.")
+    OUTPUT.write_text(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n", "utf-8")
     print(f"Saved {len(result)} end-card URLs", flush=True)
 if __name__ == "__main__":
     main()
