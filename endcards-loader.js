@@ -33,15 +33,11 @@
      episodes.sort((a,b)=>a.season-b.season||a.episode-b.episode);
    }
    const overrides={};
-   if(order&&Object.keys(order).length){
-     // The sync job has already migrated image keys to the production order.
-     for(const [key,url] of Object.entries(images))
-       if(/^\\d+-\\d+$/.test(key)&&typeof url==='string'&&/^https:\\/\\/(static|vignette)\\.wikia\\.nocookie\\.net\\//i.test(url))
-         overrides[key]=url;
-   }else{
-     for(const e of episodes){
-       const url=imageByTitle.get(e.season+':'+canonical(e.title));
-       if(url)overrides[e.season+'-'+e.episode]=url;
+   // Images in endcards.json are already keyed by the published episode number.
+   // Do not remap twice or filter them through an incorrectly escaped regex.
+   for(const [key,url] of Object.entries(images)){
+     if(typeof url==='string' && url.startsWith('https://static.wikia.nocookie.net/')){
+       overrides[key]=url;
      }
    }
    Object.assign(window.MV_IMAGE_OVERRIDES||{},overrides);
