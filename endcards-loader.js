@@ -40,6 +40,19 @@
        overrides[key]=url;
      }
    }
+   // Hand-picked URLs always take priority over the automated wiki scanner.
+   // Empty strings leave the automatically found image unchanged.
+   try{
+     const manualResponse=await fetch('./manual-endcards.json?ts='+Date.now(),{cache:'no-store'});
+     if(manualResponse.ok){
+       const manual=await manualResponse.json();
+       for(const [key,url] of Object.entries(manual)){
+         if(/^\\d+-\\d+$/.test(key)&&typeof url==='string'&&/^https?:\\/\\//i.test(url.trim())){
+           overrides[key]=url.trim();
+         }
+       }
+     }
+   }catch(error){console.warn('Manual endcards unavailable:',error)}
    Object.assign(window.MV_IMAGE_OVERRIDES||{},overrides);
    window.dispatchEvent(new Event('hashchange'));
  }catch(error){console.warn('Episode catalog update unavailable:',error)}
