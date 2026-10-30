@@ -1,0 +1,42 @@
+/* MiracuVerse Cinema - isolated episode player */
+.mv-cinema-poster{position:relative;overflow:hidden;isolation:isolate;min-height:300px}
+.mv-cinema-poster>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mv-cinema-poster:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#090611bd,transparent 55%),linear-gradient(90deg,#100d1a55,#100d1a20);pointer-events:none}
+.mv-cinema-launch{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:14px;background:transparent;color:#fff;border:0;cursor:pointer;font:800 16px Outfit;text-shadow:0 2px 12px #000}
+.mv-cinema-play{width:85px;height:85px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(130deg,#f257a0,#9c3ed5);border:3px solid #ffffffb5;box-shadow:0 0 0 12px #ffffff16,0 20px 50px #0008;transition:transform .25s,box-shadow .25s;font-size:32px;padding-left:5px}
+.mv-cinema-launch:hover .mv-cinema-play{transform:scale(1.12);box-shadow:0 0 0 18px #ffffff20,0 25px 65px #0009}
+.mv-cinema-availability{position:absolute;z-index:2;bottom:15px;left:20px;font:700 11px Outfit;letter-spacing:.3px;color:#fff;background:#100e19c9;padding:8px 12px;border-radius:20px}
+.mv-cinema-overlay{position:fixed;inset:0;z-index:500;background:#08050beF;display:flex;align-items:center;justify-content:center;padding:22px;overflow:auto;backdrop-filter:blur(16px);animation:mv-cinema-in .25s ease-out}
+@keyframes mv-cinema-in{from{opacity:0}to{opacity:1}}
+body.mv-cinema-open{overflow:hidden}
+.mv-cinema-shell{width:min(1190px,100%);max-height:calc(100dvh - 44px);overflow:auto;background:#131019;border:1px solid #ffffff20;border-radius:21px;box-shadow:0 35px 100px #000a;color:#fff}
+.mv-cinema-header{padding:17px 23px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mv-cinema-header h2{font:850 clamp(17px,2vw,24px) Outfit;margin:4px 0}
+.mv-cinema-header small,.mv-cinema-eyebrow{color:#c6b5cc;font-size:11px}.mv-cinema-eyebrow{color:#ef8ec7;letter-spacing:1.5px;font-weight:900}
+.mv-cinema-icon{background:#2a2231;color:#fff;border:1px solid #ffffff26;border-radius:10px;padding:10px 14px;cursor:pointer}
+.mv-cinema-screen{position:relative;aspect-ratio:16/9;max-height:calc(100dvh - 190px);background:#050406;overflow:hidden}
+.mv-cinema-screen video{width:100%;height:100%;display:block;object-fit:contain}
+.mv-cinema-center{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;background:linear-gradient(180deg,transparent 65%,#0006)}
+.mv-cinema-center.playing{opacity:0;transition:opacity .25s}.mv-cinema-center.unavailable{background:#0004}
+.mv-cinema-bigplay{pointer-events:auto;display:grid;place-items:center;width:82px;height:82px;border-radius:50%;background:#d94999e8;border:2px solid #fff8;color:#fff;font-size:31px;cursor:pointer;box-shadow:0 0 35px #0009}
+.mv-cinema-bigplay:disabled{opacity:.55;cursor:not-allowed}
+.mv-cinema-controls{position:absolute;z-index:3;bottom:0;left:0;right:0;padding:30px 16px 13px;background:linear-gradient(0deg,#06040bed,#06040b99 68%,transparent)}
+.mv-cinema-progress{position:relative;height:18px;display:flex;align-items:center}
+.mv-cinema-progress input{position:relative;z-index:2;width:100%;height:5px;accent-color:#ec60ad;cursor:pointer}
+.mv-cinema-buffer{position:absolute;left:0;top:7px;height:4px;background:#ffffff55;pointer-events:none}
+.mv-cinema-controlrow{display:flex;gap:6px;align-items:center;min-width:0}
+.mv-cinema-controlrow button{border:0;background:transparent;color:#fff;border-radius:8px;padding:8px 9px;cursor:pointer;font-weight:800;white-space:nowrap}
+.mv-cinema-controlrow button:hover{background:#ffffff24}
+.mv-cinema-controlrow input[type=range]{width:74px;accent-color:#e66cb3}
+.mv-cinema-controlrow select{max-width:100px;border:1px solid #ffffff30;background:#221a2ce8;color:#fff;border-radius:8px;padding:7px 4px;font-size:12px}
+.mv-cinema-grow{flex:1}
+#mv-time{font-size:12px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.mv-cinema-feedback{position:absolute;z-index:5;top:14px;left:50%;transform:translateX(-50%);border-radius:10px;background:#18101ecb;color:#fff;padding:8px 15px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s}
+.mv-cinema-feedback.show{opacity:1}
+.mv-cinema-footer{padding:12px 22px;display:flex;justify-content:space-between;gap:14px;color:#c5b6c9;font-size:11px}
+.mv-cinema-shortcuts{opacity:.7}
+.mv-cinema-theater .mv-cinema-shell{width:100%;max-height:100dvh}
+.mv-cinema-theater{padding:0}
+.mv-cinema-theater .mv-cinema-shell{border-radius:0}
+@media(max-width:720px){.mv-cinema-overlay{padding:8px}.mv-cinema-shell{max-height:95dvh}.mv-cinema-header{padding:12px}.mv-cinema-screen{max-height:none;aspect-ratio:16/10}.mv-cinema-controls{padding:15px 7px 5px}.mv-cinema-controlrow{gap:1px;flex-wrap:wrap}.mv-cinema-controlrow button{padding:6px}.mv-cinema-controlrow input[type=range]{width:45px}.mv-cinema-controlrow select{max-width:78px;font-size:10px}#mv-time{font-size:10px}.mv-cinema-bigplay{width:55px;height:55px;font-size:23px}.mv-cinema-footer{flex-direction:column}.mv-cinema-shortcuts{display:none}}
+@media(prefers-reduced-motion:reduce){.mv-cinema-overlay{animation:none}.mv-cinema-play{transition:none}}
