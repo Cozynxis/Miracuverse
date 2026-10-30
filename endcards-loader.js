@@ -1,59 +1,33 @@
-/* Load verified production order and image index without manual per-episode edits. */
+/* Endcard loader: automatic catalog + manual overrides. Keep each source independent. */
 (async()=>{
- const normalize=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
- try{
-   const [orderResponse,imageResponse]=await Promise.all([
-     fetch('./episode-order.json?ts='+Math.floor(Date.now()/3600000),{cache:'no-store'}),
-     fetch('./endcards.json?ts='+Math.floor(Date.now()/3600000),{cache:'no-store'})
-   ]);
-   const order=orderResponse.ok?await orderResponse.json():{};
-   const images=imageResponse.ok?await imageResponse.json():{};
-   const episodes=window.MV_EPISODES||[];
-   const original=episodes.map(e=>({...e}));
-   const byTitle=new Map(original.map(e=>[e.season+':'+normalize(e.title),e]));
-   const aliases={'theevillustrator':'theevilustrator','misteragreste':'mragreste','grendiaper':'grandiaper'};
-   const canonical=s=>aliases[normalize(s)]||normalize(s);
-   const imageByTitle=new Map();
-   for(const e of original){
-     const url=images[e.season+'-'+e.episode];
-     if(typeof url==='string'&&/^https:\/\/(static|vignette)\.wikia\.nocookie\.net\//i.test(url))
-       imageByTitle.set(e.season+':'+canonical(e.title),url);
-   }
-   if(order&&typeof order==='object'){
-     for(const [season,titles] of Object.entries(order)){
-       if(!Array.isArray(titles)||!titles.length)continue;
-       const number=Number(season);
-       const current=episodes.filter(e=>e.season===number);
-       if(current.length!==titles.length)continue;
-       const lookup=new Map(current.map(e=>[canonical(e.title),e]));
-       if(titles.some(t=>!lookup.has(canonical(t))))continue;
-       const updated=titles.map((title,i)=>({...lookup.get(canonical(title)),episode:i+1}));
-       episodes.splice(0,episodes.length,...episodes.filter(e=>e.season!==number),...updated);
-     }
-     episodes.sort((a,b)=>a.season-b.season||a.episode-b.episode);
-   }
-   const overrides={};
-   // Images in endcards.json are already keyed by the published episode number.
-   // Do not remap twice or filter them through an incorrectly escaped regex.
-   for(const [key,url] of Object.entries(images)){
-     if(typeof url==='string' && url.startsWith('https://static.wikia.nocookie.net/')){
-       overrides[key]=url;
-     }
-   }
-   // Hand-picked URLs always take priority over the automated wiki scanner.
-   // Empty strings leave the automatically found image unchanged.
-   try{
-     const manualResponse=await fetch('./manual-endcards.json?ts='+Date.now(),{cache:'no-store'});
-     if(manualResponse.ok){
-       const manual=await manualResponse.json();
-       for(const [key,url] of Object.entries(manual)){
-         if(/^\\d+-\\d+$/.test(key)&&typeof url==='string'&&/^https?:\\/\\//i.test(url.trim())){
-           overrides[key]=url.trim();
-         }
-       }
-     }
-   }catch(error){console.warn('Manual endcards unavailable:',error)}
-   Object.assign(window.MV_IMAGE_OVERRIDES||{},overrides);
-   window.dispatchEvent(new Event('hashchange'));
- }catch(error){console.warn('Episode catalog update unavailable:',error)}
+  const validUrl=value=>{
+    if(typeof value!=='string'||!value.trim())return false;
+    try{const parsed=new URL(value.trim());return parsed.protocol==='https:'||parsed.protocol==='http:'}
+    catch{return false}
+  };
+  const read=async path=>{
+    try{
+      const response=await fetch(path+'?v='+Date.now(),{cache:'no-store'});
+      if(!response.ok)throw new Error(path+': '+response.status);
+      const result=await response.json();
+      return result&&typeof result==='object'?result:{};
+    }catch(error){console.warn('MiracuVerse endcards:',error);return {}}
+  };
+  const [images,manual]=await Promise.all([read('./endcards.json'),read('./manual-endcards.json')]);
+  const overrides=window.MV_IMAGE_OVERRIDES||(window.MV_IMAGE_OVERRIDES={});
+  let count=0;
+  for(const source of [images,manual]){
+    for(const [key,value] of Object.entries(source)){
+      const parts=key.split('-');
+      if(parts.length!==2||parts.some(part=>part===''||!Number.isInteger(Number(part))))continue;
+      if(!validUrl(value))continue;
+      overrides[key]=value.trim();
+      count++;
+    }
+  }
+  console.info('MiracuVerse: loaded '+count+' endcard entries (manual images override automatic images).');
+  if(typeof window.MV_EPISODE_IMAGE!=='function'){
+    window.MV_EPISODE_IMAGE=e=>overrides[e.season+'-'+e.episode]||e.image||'';
+  }
+  window.dispatchEvent(new Event('hashchange'));
 })();
