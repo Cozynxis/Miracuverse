@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "description": "MiracuVerse character and kwami image/data overrides. Match entries by exact name. Blank image keeps the default placeholder.",
+  "characters": [
+    {
+      "name": "Marinette Dupain-Cheng",
+      "image": "",
+      "description": "Marinette is the holder of the Ladybug Miraculous.",
+      "power": "Lucky Charm",
+      "miraculous": "Ladybug",
+      "wiki": "Marinette_Dupain-Cheng"
+    },
+    {
+      "name": "Adrien Agreste",
+      "image": "",
+      "description": "Adrien is the holder of the Black Cat Miraculous.",
+      "power": "Cataclysm",
+      "miraculous": "Black Cat",
+      "wiki": "Adrien_Agreste"
+    },
+    {
+      "name": "Alya Césaire",
+      "image": "",
+      "description": "Alya is a friend of Marinette and the hero Rena Rouge.",
+      "power": "Mirage",
+      "miraculous": "Fox",
+      "wiki": "Alya_Césaire"
+    },
+    {
+      "name": "Nino Lahiffe",
+      "image": "",
+      "description": "Nino is a friend of Adrien and the hero Carapace.",
+      "power": "Shell-ter",
+      "miraculous": "Turtle",
+      "wiki": "Nino_Lahiffe"
+    }
+  ],
+  "kwamis": [
+    {
+      "name": "Tikki",
+      "image": "",
+      "description": "Kwami of Creation.",
+      "power": "Creation",
+      "miraculous": "Ladybug",
+      "wiki": "Tikki"
+    },
+    {
+      "name": "Plagg",
+      "image": "",
+      "description": "Kwami of Destruction.",
+      "power": "Destruction",
+      "miraculous": "Black Cat",
+      "wiki": "Plagg"
+    },
+    {
+      "name": "Nooroo",
+      "image": "",
+      "description": "Kwami of Transmission.",
+      "power": "Transmission",
+      "miraculous": "Butterfly",
+      "wiki": "Nooroo"
+    },
+    {
+      "name": "Duusu",
+      "image": "",
+      "description": "Kwami of Emotion.",
+      "power": "Emotion",
+      "miraculous": "Peacock",
+      "wiki": "Duusu"
+    }
+  ]
+}
