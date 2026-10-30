@@ -37,20 +37,27 @@ def full_image(img):
     return ""
 
 def read_season(session, season):
-    url = BASE + "/wiki/Season_" + str(season) + "/Gallery"
-    r = session.get(url, headers=HEADERS, timeout=30)
-    r.raise_for_status()
-    soup = BeautifulSoup(r.text, "html.parser")
-    # Fandom uses different markup across desktop, mobile and cached HTML.
-    section = soup.find(id=re.compile(r"end[_ -]?cards?", re.I))
-    if section:
-        heading = section if section.name in ("h2", "h3", "h4") else section.find_parent(re.compile(r"^h[2-4]$"))
-    else:
-        heading = next((h for h in soup.find_all(re.compile(r"^h[2-4]$"))
-                        if re.search(r"end\s*cards?", h.get_text(" ", strip=True), re.I)), None)
+    # Use Fandom's public MediaWiki Action API rather than its blocked /wiki HTML pages.
+    response = session.get(BASE + "/api.php", params={
+        "action": "parse", "page": f"Season_{season}/Gallery",
+        "prop": "text", "format": "json", "formatversion": "2"
+    }, headers=HEADERS, timeout=30)
+    response.raise_for_status()
+    payload = response.json()
+    if "error" in payload:
+        raise RuntimeError(str(payload["error"]))
+    html = payload.get("parse", {}).get("text", "")
+    if isinstance(html, dict):
+        html = html.get("*", "")
+    if not html:
+        raise RuntimeError("Wiki API returned no gallery HTML")
+    soup = BeautifulSoup(html, "html.parser")
+    heading = next((h for h in soup.find_all(re.compile("^h[2-4]$"))
+                    if re.search(r"end\\s*cards?", h.get_text(" ", strip=True), re.I)), None)
     if not heading:
-        print(f"Season {season}: End cards heading missing; page length {len(r.content)}", flush=True)
-        return {}
+        heading = soup.find(id=re.compile("end[_ -]?cards?", re.I))
+    if not heading:
+        raise RuntimeError("No End cards section found in API response")
     images = {}
     scanned = 0
     for element in heading.next_elements:
@@ -62,17 +69,17 @@ def read_season(session, season):
         if not image:
             continue
         scanned += 1
-        parent = element.find_parent(class_=re.compile("wikia-gallery-item|gallerybox|gallery-item|lightbox-caption|thumb"))
-        candidates = [element.get("alt", ""), element.get("data-image-name", ""), element.get("title", "")]
+        parent = element.find_parent(class_=re.compile("wikia-gallery-item|gallerybox|gallery-item|lightbox-caption|thumb|gallery"))
+        captions = [element.get("alt", ""), element.get("data-image-name", ""), element.get("title", "")]
         if parent:
-            candidates += [parent.get_text(" ", strip=True), parent.get("data-image-name", "")]
-        for name in candidates:
-            name = re.sub(r"\.(png|jpg|jpeg|webp)$", "", name, flags=re.I)
-            name = re.sub(r"\b(end\s*cards?|endcards?|ending)\b", "", name, flags=re.I)
-            name = canonical(name)
-            if len(name) > 2:
-                images.setdefault(name, image)
-    print(f"Season {season}: scanned {scanned} images, found {len(images)} labels", flush=True)
+            captions += [parent.get_text(" ", strip=True), parent.get("data-image-name", "")]
+        for caption in captions:
+            caption = re.sub(r"\\.(png|jpg|jpeg|webp)$", "", caption, flags=re.I)
+            caption = re.sub(r"\\b(end\\s*cards?|endcards?|ending)\\b", "", caption, flags=re.I)
+            key = canonical(caption)
+            if len(key) > 2:
+                images.setdefault(key, image)
+    print(f"Season {season}: {scanned} end-card images, {len(images)} labels via API", flush=True)
     return images
 
 def main():
