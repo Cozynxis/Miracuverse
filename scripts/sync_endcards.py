@@ -29,44 +29,52 @@ def canonical(s):
     s = norm(s)
     return norm(ALIASES.get(s, s))
 def full_image(img):
-    for key in ("data-src", "data-original", "src"):
+    for key in ("data-src", "data-original", "data-image-src", "src"):
         val = img.get(key, "")
-        if "static.wikia.nocookie.net" in val or "vignette.wikia.nocookie.net" in val:
-            return val.split("/revision/")[0] if "/revision/" in val else val
+        if ("static.wikia.nocookie.net/" in val or "vignette.wikia.nocookie.net/" in val):
+            val = val.split("/revision/")[0]
+            return val if val.startswith("https://") else ""
     return ""
+
 def read_season(session, season):
     url = BASE + "/wiki/Season_" + str(season) + "/Gallery"
     r = session.get(url, headers=HEADERS, timeout=30)
     r.raise_for_status()
     soup = BeautifulSoup(r.text, "html.parser")
-    # Gallery is divided into headings. The End cards section is explicitly labelled.
-    heading = next((h for h in soup.find_all(re.compile("^h[2-4]$"))
-                    if "end cards" in h.get_text(" ", strip=True).lower()), None)
+    # Fandom uses different markup across desktop, mobile and cached HTML.
+    section = soup.find(id=re.compile(r"end[_ -]?cards?", re.I))
+    if section:
+        heading = section if section.name in ("h2", "h3", "h4") else section.find_parent(re.compile(r"^h[2-4]$"))
+    else:
+        heading = next((h for h in soup.find_all(re.compile(r"^h[2-4]$"))
+                        if re.search(r"end\s*cards?", h.get_text(" ", strip=True), re.I)), None)
     if not heading:
-        print(f"Season {season}: End cards section missing", flush=True)
+        print(f"Season {season}: End cards heading missing; page length {len(r.content)}", flush=True)
         return {}
     images = {}
+    scanned = 0
     for element in heading.next_elements:
         if getattr(element, "name", None) in ("h2", "h3") and element is not heading:
             break
         if getattr(element, "name", None) != "img":
             continue
-        img = full_image(element)
-        if not img:
+        image = full_image(element)
+        if not image:
             continue
-        # Fandom gallery captions are commonly stored in data-image-name / title / alt.
-        parent = element.find_parent(class_=re.compile("wikia-gallery-item|gallerybox|gallery-item|lightbox-caption"))
-        candidates = [element.get("alt", ""), element.get("data-image-name", "")]
+        scanned += 1
+        parent = element.find_parent(class_=re.compile("wikia-gallery-item|gallerybox|gallery-item|lightbox-caption|thumb"))
+        candidates = [element.get("alt", ""), element.get("data-image-name", ""), element.get("title", "")]
         if parent:
-            candidates.extend([parent.get_text(" ", strip=True), parent.get("data-image-name", "")])
+            candidates += [parent.get_text(" ", strip=True), parent.get("data-image-name", "")]
         for name in candidates:
             name = re.sub(r"\.(png|jpg|jpeg|webp)$", "", name, flags=re.I)
-            name = re.sub(r"\b(end\s*card|endcard|ending)\b", "", name, flags=re.I)
+            name = re.sub(r"\b(end\s*cards?|endcards?|ending)\b", "", name, flags=re.I)
             name = canonical(name)
-            if name and len(name) > 2:
-                images.setdefault(name, img)
-    print(f"Season {season}: {len(images)} possible caption matches", flush=True)
+            if len(name) > 2:
+                images.setdefault(name, image)
+    print(f"Season {season}: scanned {scanned} images, found {len(images)} labels", flush=True)
     return images
+
 def main():
     existing = {}
     if OUTPUT.exists():
@@ -105,7 +113,7 @@ def main():
                 time.sleep(1)
             except Exception as exc:
                 print(f"Season {season}: {exc}", flush=True)
-    OUTPUT.write_text(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n", "utf-8")
+    if not result:\n        raise RuntimeError("No end cards found. Keeping existing JSON; check Fandom response and gallery markup.")\n    OUTPUT.write_text(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n", "utf-8")
     print(f"Saved {len(result)} end-card URLs", flush=True)
 if __name__ == "__main__":
     main()
