@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "description": "Add only video sources you have permission to host or embed. Episode key is season-episode. Empty catalog means the player is ready but episodes are not yet available.",
+  "episodes": {}
+}
