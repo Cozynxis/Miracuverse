@@ -71,3 +71,5 @@ body.mv-cinema-open{overflow:hidden}
 .mv-cinema-poster .mv-cinema-feedback{top:12px;max-width:85%;text-align:center}
 @media(hover:none){.mv-cinema-poster .mv-cinema-controls{opacity:1;transform:none}}
 @media(max-width:650px){.mv-cinema-poster .mv-cinema-controls{padding:24px 6px 5px}.mv-cinema-poster .mv-cinema-controlrow{gap:1px}.mv-cinema-poster .mv-cinema-controlrow button{font-size:10px;padding:5px 4px}.mv-cinema-poster .mv-cinema-controlrow select{max-width:58px;font-size:9px;padding:3px 1px}.mv-cinema-poster .mv-cinema-controlrow input[type=range]{width:38px}.mv-cinema-poster #mv-time{font-size:9px}.mv-cinema-poster .mv-cinema-bigplay{width:54px;height:54px}}
+
+.mv-cinema-poster .mv-cinema-header{display:block;position:absolute;top:9px;right:9px;z-index:15;padding:0;pointer-events:none}.mv-cinema-poster .mv-cinema-header>div{display:none}.mv-cinema-poster .mv-cinema-header #mv-close{display:grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid #ffffff4a;border-radius:50%;background:#0b0911aa;backdrop-filter:blur(10px);color:#fff;pointer-events:auto;font-size:15px}.mv-cinema-poster .mv-cinema-header #mv-close:hover{background:#d64a93}
