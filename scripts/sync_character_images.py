@@ -52,7 +52,7 @@ def parse_names():
     for kind in ("CHARACTERS", "KWAMIS"):
         start = text.index("window.MV_" + kind + "=[")
         body = text[start:].split("].map(", 1)[0] if kind == "KWAMIS" else text[start:].split("].filter(", 1)[0]
-        names = re.findall(r'^\s*\[\s*"([^"]+)"', body, re.M)
+        names = re.findall(r'\[\s*"([^"]+)"\s*,\s*"[^"]*"\s*,\s*"[^"]*"\s*\]', body)
         if not names:
             raise RuntimeError("No names for " + kind)
         result["characters" if kind == "CHARACTERS" else "kwamis"] = list(dict.fromkeys(names))
