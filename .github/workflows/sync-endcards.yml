@@ -1,5 +1,9 @@
 name: Sync Miraculous end cards
 on:
+  push:
+    paths:
+      - '.github/workflows/sync-endcards.yml'
+      - 'scripts/sync_endcards.py'
   workflow_dispatch:
   schedule:
     - cron: "21 5 * * 0"
