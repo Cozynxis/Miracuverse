@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1248 1248" role="img" aria-label="Ladybug Miraculous emblem">
+<circle cx="624" cy="624" r="624" fill="#050505"/>
+<circle cx="624" cy="624" r="570" fill="#ed171f"/>
+<path d="M624 40V440M624 808v400" stroke="#050505" stroke-width="21"/>
+<circle cx="624" cy="624" r="194" fill="#050505"/>
+<ellipse cx="334" cy="334" rx="189" ry="139" transform="rotate(-45 334 334)" fill="#050505"/>
+<ellipse cx="914" cy="334" rx="189" ry="139" transform="rotate(45 914 334)" fill="#050505"/>
+<ellipse cx="334" cy="914" rx="189" ry="139" transform="rotate(45 334 914)" fill="#050505"/>
+<ellipse cx="914" cy="914" rx="189" ry="139" transform="rotate(-45 914 914)" fill="#050505"/>
+</svg>
