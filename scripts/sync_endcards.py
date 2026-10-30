@@ -82,6 +82,44 @@ def read_season(session, season):
     print(f"Season {season}: {scanned} end-card images, {len(images)} labels via API", flush=True)
     return images
 
+def read_episode_endcard(session, title):
+    # Fallback for episodes omitted from the season-wide end-card gallery.
+    pages = [title + "/Gallery"]
+    aliases = {
+        "The Origins - Part 1": "Ladybug & Cat Noir (Origins - Part 1)",
+        "The Origins - Part 2": "Stoneheart (Origins - Part 2)",
+        "A Christmas Special": "Santa Claws",
+        "Chris Master": "Christmaster",
+        "Kwami Buster": "Kwamibuster",
+        "Strike Back": "Strikeback (Shadow Moth's Final Attack - Part 2)",
+        "Re-Creation": "Re-creation (The Final Day - Part 2)",
+    }
+    if title in aliases:
+        pages.insert(0, aliases[title] + "/Gallery")
+    for page in pages:
+        try:
+            r = session.get(BASE + "/api.php", params={
+                "action": "parse", "page": page, "prop": "text",
+                "format": "json", "formatversion": "2"
+            }, headers=HEADERS, timeout=25)
+            r.raise_for_status()
+            data = r.json()
+            html = data.get("parse", {}).get("text", "")
+            if isinstance(html, dict): html = html.get("*", "")
+            soup = BeautifulSoup(html, "html.parser")
+            for h in soup.find_all(re.compile("^h[2-5]$")):
+                if not re.search(r"end\\s*cards?", h.get_text(" ", strip=True), re.I):
+                    continue
+                for el in h.next_elements:
+                    if getattr(el, "name", None) in ("h2", "h3", "h4", "h5") and el is not h:
+                        break
+                    if getattr(el, "name", None) == "img":
+                        url = full_image(el)
+                        if url: return url
+        except (requests.RequestException, ValueError, KeyError):
+            pass
+    return None
+
 def main():
     existing = {}
     if OUTPUT.exists():
@@ -120,6 +158,10 @@ def main():
                     if not img:
                         img = next((url for caption, url in matches.items()
                                     if caption == n or (len(n) > 5 and (caption.startswith(n + " ") or n.startswith(caption + " ")))), None)
+                    if not img and key not in result:
+                        img = read_episode_endcard(session, title)
+                        if img:
+                            print(f"Season {season} episode {i}: recovered from episode gallery", flush=True)
                     if img:
                         result[key] = img
                 time.sleep(1)
