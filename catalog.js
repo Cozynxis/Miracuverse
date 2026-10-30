@@ -7,7 +7,7 @@ window.MV_KWAMIS=[
 ].map(([name,concept,miraculous])=>({name,concept,miraculous,image:""}));
 /* Vul later via adminpanel echte items in; datum is ISO 8601 met tijdzone. Geen fictieve releasedata. */
 window.MV_RELEASES=[
-{id:"upcoming-1",title:"Next Miraculous Episode",season:"Upcoming",episode:"TBA",language:"To be announced",date:"",description:"De volgende officieel bevestigde aflevering verschijnt hier zodra de releasedatum bekend is.",image:"",badge:"UPCOMING"},
-{id:"upcoming-2",title:"Upcoming Special",season:"Special",episode:"TBA",language:"To be announced",date:"",description:"Een tweede release-slot voor toekomstige specials of aankondigingen.",image:"",badge:"COMING SOON"},
-{id:"upcoming-3",title:"More Adventures Ahead",season:"Upcoming",episode:"TBA",language:"To be announced",date:"",description:"Voeg later zoveel aankomende afleveringen toe als je wilt.",image:"",badge:"COMING SOON"}
+{id:"upcoming-1",title:"Next Miraculous Episode",season:"Upcoming",episode:"TBA",language:"To be announced",date:"",description:"The next officially confirmed episode will appear here when its release date is announced.",image:"",badge:"UPCOMING"},
+{id:"upcoming-2",title:"Upcoming Special",season:"Special",episode:"TBA",language:"To be announced",date:"",description:"A second release slot for future specials or announcements.",image:"",badge:"COMING SOON"},
+{id:"upcoming-3",title:"More Adventures Ahead",season:"Upcoming",episode:"TBA",language:"To be announced",date:"",description:"Add more upcoming episodes here in the future.",image:"",badge:"COMING SOON"}
 ];
