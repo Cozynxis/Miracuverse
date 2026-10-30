@@ -7,3 +7,7 @@ window.MV_EPISODES=[
 ...["Climatiqueen","The Illustrhater","Sublimation","Daddycop","Werepapas","Sleeping Syren","El Toro De Piedra","Vampigami","Mr. Agreste","The Dark Castle","Revelator","Wreckless Driver","Yaksi Gozen","Grandiaper","The Ruler","Noe","A Fairy Good Night","The Dirtifiers","Riginarazione","Heartfixer","The Chained Titans","Lady Chaos","Sadnansi","Queen Of The Dreadzone","Secret Protocol","Nemesis"].map((title,i)=>({season:6,episode:i+1,title})),
 ...["New York: United Heroez","Shanghai: The Legend of Lady Dragon","Awakening - The Movie","Paris: Shadybug and Claw Noir","London: At the Edge of Time","Tokyo: Stellar Force"].map((title,i)=>({season:0,episode:i+1,title}))
 ];
+/* Episode end-card integration. Add approved direct image URLs by episode ID (e.g. "1-1"). */
+window.MV_IMAGE_OVERRIDES=window.MV_IMAGE_OVERRIDES||{};
+window.MV_EPISODE_IMAGE=e=>window.MV_IMAGE_OVERRIDES[e.season+"-"+e.episode]||e.image||"";
+window.MV_GALLERY_PAGE=e=>{const titles={"1-25":"Ladybug & Cat Noir (Origins - Part 1)","1-26":"Stoneheart (Origins - Part 2)","2-26":"Santa Claws"};const title=titles[e.season+"-"+e.episode]||e.title;return "https://miraculousladybug.fandom.com/wiki/"+encodeURIComponent(title.replaceAll(" ","_"))+"/Gallery";};
