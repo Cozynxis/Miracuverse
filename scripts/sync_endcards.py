@@ -56,7 +56,7 @@ def read_season(session, season):
         raise RuntimeError("Wiki API returned no gallery HTML")
     soup = BeautifulSoup(html, "html.parser")
     heading = next((h for h in soup.find_all(re.compile("^h[2-4]$"))
-                    if re.search(r"end\\s*cards?", h.get_text(" ", strip=True), re.I)), None)
+                    if re.search(r"end\s*cards?", h.get_text(" ", strip=True), re.I)), None)
     if not heading:
         heading = soup.find(id=re.compile("end[_ -]?cards?", re.I))
     if not heading:
@@ -77,8 +77,8 @@ def read_season(session, season):
         if parent:
             captions += [parent.get_text(" ", strip=True), parent.get("data-image-name", "")]
         for caption in captions:
-            caption = re.sub(r"\\.(png|jpg|jpeg|webp)$", "", caption, flags=re.I)
-            caption = re.sub(r"\\b(end\\s*cards?|endcards?|ending)\\b", "", caption, flags=re.I)
+            caption = re.sub(r"\.(png|jpg|jpeg|webp)$", "", caption, flags=re.I)
+            caption = re.sub(r"\b(end\s*cards?|endcards?|ending)\b", "", caption, flags=re.I)
             key = canonical(caption)
             if len(key) > 2:
                 images.setdefault(key, image)
@@ -113,7 +113,7 @@ def read_episode_endcard(session, title):
             if isinstance(html, dict): html = html.get("*", "")
             soup = BeautifulSoup(html, "html.parser")
             for h in soup.find_all(re.compile("^h[2-5]$")):
-                if not re.search(r"end\\s*cards?", h.get_text(" ", strip=True), re.I):
+                if not re.search(r"end\s*cards?", h.get_text(" ", strip=True), re.I):
                     continue
                 for el in h.next_elements:
                     if getattr(el, "name", None) in ("h2", "h3", "h4", "h5") and el is not h:
@@ -148,7 +148,7 @@ def read_special_image(session, page):
     if isinstance(html, dict): html = html.get("*", "")
     soup = BeautifulSoup(html, "html.parser")
     for heading in soup.find_all(re.compile("^h[2-5]$")):
-        if re.search(r"end\\s*cards?", heading.get_text(" ", strip=True), re.I):
+        if re.search(r"end\s*cards?", heading.get_text(" ", strip=True), re.I):
             for el in heading.next_elements:
                 if getattr(el, "name", None) in ("h2", "h3", "h4", "h5") and el is not heading:
                     break
