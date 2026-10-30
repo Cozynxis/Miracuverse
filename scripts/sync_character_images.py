@@ -59,8 +59,20 @@ def parse_names():
     return result
 
 def image_for(name):
-    aliases = {"Cat Noir": "Adrien Agreste", "Ladybug": "Marinette Dupain-Cheng"}
+    aliases = {"Chloé Bourgeois": "Chloé Bourgeois", "Zoé Lee": "Zoé Lee"}
     page = aliases.get(name, name).replace(" ", "_")
+    # MediaWiki's pageimages API is more reliable than parsing full page HTML.
+    try:
+        result = request({
+            "action": "query", "titles": page, "prop": "pageimages",
+            "pithumbsize": 600, "format": "json", "redirects": "1"
+        })
+        for item in result.get("query", {}).get("pages", {}).values():
+            url = item.get("thumbnail", {}).get("source", "")
+            if url.startswith("https://") and "static.wikia.nocookie.net" in url:
+                return url
+    except Exception as error:
+        print("Page image lookup failed for", name, ":", error)
     try:
         parsed = request({"action": "parse", "page": page, "prop": "text", "format": "json", "formatversion": "2"})
         html = parsed.get("parse", {}).get("text", "")
@@ -71,7 +83,7 @@ def image_for(name):
             if parser.candidates[0][0] >= 5:
                 return parser.candidates[0][1]
     except Exception as error:
-        print("Could not load", name, ":", error)
+        print("Infobox image lookup failed for", name, ":", error)
     return ""
 
 def main():
