@@ -20,6 +20,9 @@ ALIASES = {
     "onichan": "oni-chan", "soul crusher": "sole crusher",
     "guilt trip": "guiltrip", "optygami": "optigami",
     "strike back": "strikeback", "recreation": "re-creation",
+    "felix": "félix", "mister agreste": "mister agreste", "mr. agreste": "mister agreste",
+    "grandiaper": "grendiaper", "the origins part 1": "ladybug & cat noir",
+    "the origins part 2": "stoneheart",
 }
 def norm(s):
     s = re.sub(r"\([^)]*\)", "", s or "")
@@ -93,6 +96,8 @@ def read_episode_endcard(session, title):
         "Kwami Buster": "Kwamibuster",
         "Strike Back": "Strikeback (Shadow Moth's Final Attack - Part 2)",
         "Re-Creation": "Re-creation (The Final Day - Part 2)",
+        "Felix": "Félix", "Mister Agreste": "Mister Agreste",
+        "Mr. Agreste": "Mister Agreste", "Grandiaper": "Grendiaper",
     }
     if title in aliases:
         pages.insert(0, aliases[title] + "/Gallery")
@@ -119,6 +124,48 @@ def read_episode_endcard(session, title):
         except (requests.RequestException, ValueError, KeyError):
             pass
     return None
+
+SPECIAL_GALLERIES = {
+    1: "Miraculous New York/Gallery",
+    2: "Miraculous Shanghai/Gallery",
+    3: "Ladybug & Cat Noir: The Movie/Gallery",
+    4: "Miraculous Paris/Gallery",
+    5: "Miraculous London/Gallery",
+    6: "Miraculous Tokyo/Gallery",
+}
+
+def read_special_image(session, page):
+    """Prefer an explicitly labeled end card; otherwise use an actual gallery image."""
+    r = session.get(BASE + "/api.php", params={
+        "action": "parse", "page": page, "prop": "text",
+        "format": "json", "formatversion": "2"
+    }, headers=HEADERS, timeout=30)
+    r.raise_for_status()
+    data = r.json()
+    if "error" in data:
+        raise RuntimeError(str(data["error"]))
+    html = data.get("parse", {}).get("text", "")
+    if isinstance(html, dict): html = html.get("*", "")
+    soup = BeautifulSoup(html, "html.parser")
+    for heading in soup.find_all(re.compile("^h[2-5]$")):
+        if re.search(r"end\\s*cards?", heading.get_text(" ", strip=True), re.I):
+            for el in heading.next_elements:
+                if getattr(el, "name", None) in ("h2", "h3", "h4", "h5") and el is not heading:
+                    break
+                if getattr(el, "name", None) == "img":
+                    image = full_image(el)
+                    if image: return image, "endcard"
+    # Specials and movies frequently have no end-card section.
+    # Only accept a screenshot/poster from a gallery section, not UI/navigation images.
+    for heading in soup.find_all(re.compile("^h[2-5]$")):
+        if re.search(r"screenshots?|posters?|credits", heading.get_text(" ", strip=True), re.I):
+            for el in heading.next_elements:
+                if getattr(el, "name", None) in ("h2", "h3", "h4", "h5") and el is not heading:
+                    break
+                if getattr(el, "name", None) == "img":
+                    image = full_image(el)
+                    if image: return image, "gallery"
+    return None, None
 
 def main():
     existing = {}
@@ -167,6 +214,20 @@ def main():
                 time.sleep(1)
             except Exception as exc:
                 print(f"Season {season}: {exc}", flush=True)
+    with requests.Session() as session:
+        for number, page in SPECIAL_GALLERIES.items():
+            key = f"0-{number}"
+            if key in result:
+                continue
+            try:
+                image, kind = read_special_image(session, page)
+                if image:
+                    result[key] = image
+                    print(f"Special {number}: {kind} image found", flush=True)
+                else:
+                    print(f"Special {number}: no suitable gallery image", flush=True)
+            except Exception as exc:
+                print(f"Special {number}: {exc}", flush=True)
     if not result:
         raise RuntimeError("No end cards found. Keeping existing JSON; check Fandom response and gallery markup.")
     OUTPUT.write_text(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n", "utf-8")
