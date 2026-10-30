@@ -33,16 +33,16 @@
      episodes.sort((a,b)=>a.season-b.season||a.episode-b.episode);
    }
    const overrides={};
-   for(const e of episodes){
-     const url=imageByTitle.get(e.season+':'+canonical(e.title));
-     if(url)overrides[e.season+'-'+e.episode]=url;
-   }
-   // Once the workflow remaps endcards.json to production codes, the stored key
-   // already refers to the new episode. Avoid applying stale title mapping twice.
    if(order&&Object.keys(order).length){
+     // The sync job has already migrated image keys to the production order.
      for(const [key,url] of Object.entries(images))
-       if(/^\d+-\d+$/.test(key)&&typeof url==='string'&&/^https:\/\/(static|vignette)\.wikia\.nocookie\.net\//i.test(url))
+       if(/^\\d+-\\d+$/.test(key)&&typeof url==='string'&&/^https:\\/\\/(static|vignette)\\.wikia\\.nocookie\\.net\\//i.test(url))
          overrides[key]=url;
+   }else{
+     for(const e of episodes){
+       const url=imageByTitle.get(e.season+':'+canonical(e.title));
+       if(url)overrides[e.season+'-'+e.episode]=url;
+     }
    }
    Object.assign(window.MV_IMAGE_OVERRIDES||{},overrides);
    window.dispatchEvent(new Event('hashchange'));
