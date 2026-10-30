@@ -5,7 +5,29 @@
       "title": "Miraculous World: London",
       "description": "Music from Miraculous World: London – At the Edge of Time.",
       "cover": "https://dandi.b-cdn.net/eps/miraculum/songs/strk_london/cover.webp",
-      "songs": []
+      "songs": [
+        {
+          "id": "london-track-1",
+          "title": "Song title 1",
+          "artist": "Artist name",
+          "duration": "",
+          "src": ""
+        },
+        {
+          "id": "london-track-2",
+          "title": "Song title 2",
+          "artist": "Artist name",
+          "duration": "",
+          "src": ""
+        },
+        {
+          "id": "london-track-3",
+          "title": "Song title 3",
+          "artist": "Artist name",
+          "duration": "",
+          "src": ""
+        }
+      ]
     }
   ]
 }
