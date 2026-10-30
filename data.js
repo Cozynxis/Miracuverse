@@ -7,3 +7,22 @@ window.MV_EPISODES=[
 ...["Climatiqueen","The Illustrhater","Sublimation","Daddycop","Werepapas","Sleeping Syren","El Toro De Piedra","Vampigami","Mr. Agreste","The Dark Castle","Revelator","Wreckless Driver","Yaksi Gozen","Grandiaper","The Ruler","Noe","A Fairy Good Night","The Dirtifiers","Riginarazione","Heartfixer","The Chained Titans","Lady Chaos","Sadnansi","Queen Of The Dreadzone","Secret Protocol","Nemesis"].map((title,i)=>({season:6,episode:i+1,title})),
 ...["New York: United Heroez","Shanghai: The Legend of Lady Dragon","Awakening - The Movie","Paris: Shadybug and Claw Noir","London: At the Edge of Time","Tokyo: Stellar Force"].map((title,i)=>({season:0,episode:i+1,title}))
 ];
+/* Miraculous episode gallery metadata: URLs link to source galleries, not copied images. */
+window.MV_EPISODE_GALLERIES={
+  "1-25":"Ladybug & Cat Noir (Origins - Part 1)",
+  "1-26":"Stoneheart (Origins - Part 2)",
+  "2-26":"Santa Claws",
+  "3-13":"Christmaster",
+  "3-15":"Kwamibuster",
+  "3-18":"Oni-Chan",
+  "3-23":"Félix",
+  "4-26":"Strikeback (Shadow Moth's Final Attack - Part 2)",
+  "5-26":"Re-creation (The Final Day - Part 2)"
+};
+window.MV_GALLERY_PAGE=function(e){
+  const key=e.season+"-"+e.episode;
+  const title=window.MV_EPISODE_GALLERIES[key]||e.title;
+  return "https://miraculousladybug.fandom.com/wiki/"+encodeURIComponent(title.replace(/ /g,"_"))+"/Gallery";
+};
+window.MV_IMAGE_OVERRIDES={}; // key: '1-1', value: approved image URL
+window.MV_EPISODE_IMAGE=function(e){return window.MV_IMAGE_OVERRIDES[e.season+"-"+e.episode]||e.image||"";};
