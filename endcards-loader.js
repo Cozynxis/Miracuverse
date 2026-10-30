@@ -1,2 +1,50 @@
-/* Loads the generated wiki image index automatically. No manual per-episode URLs needed. */
-(async()=>{try{const res=await fetch('./endcards.json?ts='+Math.floor(Date.now()/3600000),{cache:'no-store'});if(!res.ok)return;const data=await res.json();if(!data||typeof data!=='object'||Array.isArray(data))return;const valid=Object.fromEntries(Object.entries(data).filter(([key,url])=>/^\d+-\d+$/.test(key)&&typeof url==='string'&&/^https:\/\/(?:static|vignette)\.wikia\.nocookie\.net\//i.test(url)));Object.assign(window.MV_IMAGE_OVERRIDES||{},valid);if(Object.keys(valid).length)window.dispatchEvent(new HashChangeEvent('hashchange'));}catch(err){console.warn('End-card index unavailable; keeping placeholders.',err)}})();
+/* Load verified production order and image index without manual per-episode edits. */
+(async()=>{
+ const normalize=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
+ try{
+   const [orderResponse,imageResponse]=await Promise.all([
+     fetch('./episode-order.json?ts='+Math.floor(Date.now()/3600000),{cache:'no-store'}),
+     fetch('./endcards.json?ts='+Math.floor(Date.now()/3600000),{cache:'no-store'})
+   ]);
+   const order=orderResponse.ok?await orderResponse.json():{};
+   const images=imageResponse.ok?await imageResponse.json():{};
+   const episodes=window.MV_EPISODES||[];
+   const original=episodes.map(e=>({...e}));
+   const byTitle=new Map(original.map(e=>[e.season+':'+normalize(e.title),e]));
+   const aliases={'theevillustrator':'theevilustrator','misteragreste':'mragreste','grendiaper':'grandiaper'};
+   const canonical=s=>aliases[normalize(s)]||normalize(s);
+   const imageByTitle=new Map();
+   for(const e of original){
+     const url=images[e.season+'-'+e.episode];
+     if(typeof url==='string'&&/^https:\/\/(static|vignette)\.wikia\.nocookie\.net\//i.test(url))
+       imageByTitle.set(e.season+':'+canonical(e.title),url);
+   }
+   if(order&&typeof order==='object'){
+     for(const [season,titles] of Object.entries(order)){
+       if(!Array.isArray(titles)||!titles.length)continue;
+       const number=Number(season);
+       const current=episodes.filter(e=>e.season===number);
+       if(current.length!==titles.length)continue;
+       const lookup=new Map(current.map(e=>[canonical(e.title),e]));
+       if(titles.some(t=>!lookup.has(canonical(t))))continue;
+       const updated=titles.map((title,i)=>({...lookup.get(canonical(title)),episode:i+1}));
+       episodes.splice(0,episodes.length,...episodes.filter(e=>e.season!==number),...updated);
+     }
+     episodes.sort((a,b)=>a.season-b.season||a.episode-b.episode);
+   }
+   const overrides={};
+   for(const e of episodes){
+     const url=imageByTitle.get(e.season+':'+canonical(e.title));
+     if(url)overrides[e.season+'-'+e.episode]=url;
+   }
+   // Once the workflow remaps endcards.json to production codes, the stored key
+   // already refers to the new episode. Avoid applying stale title mapping twice.
+   if(order&&Object.keys(order).length){
+     for(const [key,url] of Object.entries(images))
+       if(/^\d+-\d+$/.test(key)&&typeof url==='string'&&/^https:\/\/(static|vignette)\.wikia\.nocookie\.net\//i.test(url))
+         overrides[key]=url;
+   }
+   Object.assign(window.MV_IMAGE_OVERRIDES||{},overrides);
+   window.dispatchEvent(new Event('hashchange'));
+ }catch(error){console.warn('Episode catalog update unavailable:',error)}
+})();
