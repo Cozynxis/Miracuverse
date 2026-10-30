@@ -102,6 +102,11 @@ def main():
             episodes[int(season)] = titles
         except json.JSONDecodeError:
             print(f"Could not parse season {season}", flush=True)
+    order_path = ROOT / "episode-order.json"
+    if order_path.exists():
+        production = json.loads(order_path.read_text("utf-8"))
+        for season, titles in production.items():
+            episodes[int(season)] = titles
     with requests.Session() as session:
         for season in SEASONS:
             if season not in episodes:
