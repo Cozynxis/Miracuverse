@@ -134,8 +134,8 @@ SPECIAL_GALLERIES = {
     6: "Miraculous Tokyo/Gallery",
 }
 
-def read_special_image(session, page):
-    """Prefer an explicitly labeled end card; otherwise use an actual gallery image."""
+def read_special_image(session, page, number):
+    """Find a cinematic still, never credits. A movie poster is preferable for the film."""
     r = session.get(BASE + "/api.php", params={
         "action": "parse", "page": page, "prop": "text",
         "format": "json", "formatversion": "2"
@@ -147,24 +147,29 @@ def read_special_image(session, page):
     html = data.get("parse", {}).get("text", "")
     if isinstance(html, dict): html = html.get("*", "")
     soup = BeautifulSoup(html, "html.parser")
-    for heading in soup.find_all(re.compile("^h[2-5]$")):
-        if re.search(r"end\s*cards?", heading.get_text(" ", strip=True), re.I):
+    # Specific sections from actual wiki gallery layout, in preferred order.
+    wanted = ["promotional artwork", "posters", "poster"] if number == 3 else [
+        "pre-credit scene", "act 4", "act 3", "act 2", "act 1", "prologue", "screenshots"]
+    headings = soup.find_all(re.compile("^h[2-6]$"))
+    for label in wanted:
+        for heading in headings:
+            heading_text = heading.get_text(" ", strip=True).lower()
+            if label not in heading_text or "credit" in heading_text and "pre-credit" not in heading_text:
+                continue
+            candidates = []
             for el in heading.next_elements:
-                if getattr(el, "name", None) in ("h2", "h3", "h4", "h5") and el is not heading:
+                if getattr(el, "name", None) in ("h2", "h3", "h4", "h5", "h6") and el is not heading:
                     break
-                if getattr(el, "name", None) == "img":
-                    image = full_image(el)
-                    if image: return image, "endcard"
-    # Specials and movies frequently have no end-card section.
-    # Only accept a screenshot/poster from a gallery section, not UI/navigation images.
-    for heading in soup.find_all(re.compile("^h[2-5]$")):
-        if re.search(r"screenshots?|posters?|credits", heading.get_text(" ", strip=True), re.I):
-            for el in heading.next_elements:
-                if getattr(el, "name", None) in ("h2", "h3", "h4", "h5") and el is not heading:
-                    break
-                if getattr(el, "name", None) == "img":
-                    image = full_image(el)
-                    if image: return image, "gallery"
+                if getattr(el, "name", None) != "img":
+                    continue
+                image = full_image(el)
+                metadata = " ".join([el.get("alt", ""), el.get("title", ""), el.get("data-image-name", ""), image]).lower()
+                if image and not re.search(r"credits?|ending|title.?card|logo|icon|intro|opening", metadata):
+                    candidates.append(image)
+            if candidates:
+                # A scene near the end of an act is usually more representative
+                # than a black intro card or a credit frame.
+                return candidates[len(candidates)//2], label
     return None, None
 
 def main():
@@ -217,10 +222,8 @@ def main():
     with requests.Session() as session:
         for number, page in SPECIAL_GALLERIES.items():
             key = f"0-{number}"
-            if key in result:
-                continue
             try:
-                image, kind = read_special_image(session, page)
+                image, kind = read_special_image(session, page, number)
                 if image:
                     result[key] = image
                     print(f"Special {number}: {kind} image found", flush=True)
