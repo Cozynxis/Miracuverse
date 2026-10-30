@@ -1,0 +1,28 @@
+{
+  "playlists": [
+    {
+      "id": "miraculous-soundtrack",
+      "title": "Miraculous Soundtrack",
+      "description": "Add your own authorized audio files and artwork here.",
+      "cover": "",
+      "songs": [
+        {"id":"track-1","title":"Track 1","artist":"MiracuVerse Library","duration":"","src":""},
+        {"id":"track-2","title":"Track 2","artist":"MiracuVerse Library","duration":"","src":""}
+      ]
+    },
+    {
+      "id": "instrumentals",
+      "title": "Instrumentals",
+      "description": "Instrumental music collection.",
+      "cover": "",
+      "songs": []
+    },
+    {
+      "id": "specials",
+      "title": "Specials",
+      "description": "Music from special collections.",
+      "cover": "",
+      "songs": []
+    }
+  ]
+}
