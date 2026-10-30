@@ -9,3 +9,11 @@
 @keyframes mv-ladybug-float{0%,100%{transform:translateY(-50%) rotate(-10deg)}50%{transform:translateY(calc(-50% - 9px)) rotate(-7deg)}}
 @media(max-width:700px){.hero:after{width:175px;height:175px;right:-25px;top:26%;opacity:.13}.hero{isolation:isolate}}
 @media(prefers-reduced-motion:reduce){.hero:after{animation:none}}
+
+/* Fix header logo and keep the full home emblem inside the hero frame */
+.brandmark{flex:none;overflow:hidden;font-size:0;line-height:0}
+.hero{isolation:isolate}
+.hero:after{right:clamp(16px,4%,50px);top:50%;width:min(30%,310px);height:auto;aspect-ratio:1;max-height:calc(100% - 40px);transform:translateY(-50%);animation:mv-emblem-float 7s ease-in-out infinite}
+@keyframes mv-emblem-float{0%,100%{transform:translateY(-50%)}50%{transform:translateY(calc(-50% - 7px))}}
+@media(max-width:700px){.hero:after{right:12px;top:50%;width:min(38%,155px);max-height:calc(100% - 32px);opacity:.13}}
+@media(prefers-reduced-motion:reduce){.hero:after{animation:none}}
