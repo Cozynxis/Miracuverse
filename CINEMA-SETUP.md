@@ -39,3 +39,6 @@ Use direct HTTPS video file URLs supported by HTML5 video, such as MP4 (H.264/AA
 - No auto-play of videos until explicitly requested
 
 Videos are **not** included in the repository. Only upload or link content you are authorized to distribute. The player's feature availability depends on browser support and the video files provided.
+
+
+<!-- GitHub Pages redeploy requested after cancelled run #93; no episode or player changes. -->
