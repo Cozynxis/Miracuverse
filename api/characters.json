@@ -1,24 +1,861 @@
 {
   "version": 1,
-  "description": "MiracuVerse character and kwami image/data overrides. Match entries by exact name. Blank image keeps the default placeholder.",
+  "description": "Complete character and kwami directory; images automatically synchronized by GitHub Actions.",
   "characters": [
     {
       "name": "Marinette Dupain-Cheng",
       "image": "https://static.wikia.nocookie.net/lady-bug/images/d/da/Marinette_Dupain-Cheng_%28S6%29_Square.png/revision/latest/scale-to-width-down/268?cb=20260414183623",
+      "subtitle": "Ladybug",
+      "group": "Hero",
       "description": "Marinette is the holder of the Ladybug Miraculous.",
       "power": "Lucky Charm",
       "miraculous": "Ladybug",
       "wiki": "Marinette_Dupain-Cheng"
+    },
+    {
+      "name": "Adrien Agreste",
+      "image": "",
+      "subtitle": "Cat Noir",
+      "group": "Hero"
+    },
+    {
+      "name": "Alya Césaire",
+      "image": "",
+      "subtitle": "Rena Rouge",
+      "group": "Hero"
+    },
+    {
+      "name": "Nino Lahiffe",
+      "image": "",
+      "subtitle": "Carapace",
+      "group": "Hero"
+    },
+    {
+      "name": "Chloé Bourgeois",
+      "image": "",
+      "subtitle": "Queen Bee",
+      "group": "Hero"
+    },
+    {
+      "name": "Zoé Lee",
+      "image": "",
+      "subtitle": "Vesperia",
+      "group": "Hero"
+    },
+    {
+      "name": "Luka Couffaine",
+      "image": "",
+      "subtitle": "Viperion",
+      "group": "Hero"
+    },
+    {
+      "name": "Kagami Tsurugi",
+      "image": "",
+      "subtitle": "Ryuko",
+      "group": "Hero"
+    },
+    {
+      "name": "Alix Kubdel",
+      "image": "",
+      "subtitle": "Bunnyx",
+      "group": "Hero"
+    },
+    {
+      "name": "Max Kanté",
+      "image": "",
+      "subtitle": "Pegasus",
+      "group": "Hero"
+    },
+    {
+      "name": "Kim Lê Chiến",
+      "image": "",
+      "subtitle": "King Monkey",
+      "group": "Hero"
+    },
+    {
+      "name": "Mylène Haprèle",
+      "image": "",
+      "subtitle": "Polymouse",
+      "group": "Hero"
+    },
+    {
+      "name": "Rose Lavillant",
+      "image": "",
+      "subtitle": "Pigella",
+      "group": "Hero"
+    },
+    {
+      "name": "Juleka Couffaine",
+      "image": "",
+      "subtitle": "Purple Tigress",
+      "group": "Hero"
+    },
+    {
+      "name": "Ivan Bruel",
+      "image": "",
+      "subtitle": "Minotaurox",
+      "group": "Hero"
+    },
+    {
+      "name": "Nathaniel Kurtzberg",
+      "image": "",
+      "subtitle": "Caprikid",
+      "group": "Hero"
+    },
+    {
+      "name": "Marc Anciel",
+      "image": "",
+      "subtitle": "Rooster Bold",
+      "group": "Hero"
+    },
+    {
+      "name": "Sabrina Raincomprix",
+      "image": "",
+      "subtitle": "Miss Hound",
+      "group": "Hero"
+    },
+    {
+      "name": "Félix Fathom",
+      "image": "",
+      "subtitle": "Argos",
+      "group": "Hero"
+    },
+    {
+      "name": "Gabriel Agreste",
+      "image": "",
+      "subtitle": "Hawk Moth / Monarch",
+      "group": "Villain"
+    },
+    {
+      "name": "Nathalie Sancoeur",
+      "image": "",
+      "subtitle": "Mayura",
+      "group": "Villain"
+    },
+    {
+      "name": "Lila Rossi",
+      "image": "",
+      "subtitle": "Cerise",
+      "group": "Villain"
+    },
+    {
+      "name": "Tom Dupain",
+      "image": "",
+      "subtitle": "Marinette's father",
+      "group": "Family"
+    },
+    {
+      "name": "Sabine Cheng",
+      "image": "",
+      "subtitle": "Marinette's mother",
+      "group": "Family"
+    },
+    {
+      "name": "Gina Dupain",
+      "image": "",
+      "subtitle": "Marinette's grandmother",
+      "group": "Family"
+    },
+    {
+      "name": "Wang Cheng",
+      "image": "",
+      "subtitle": "Marinette's great-uncle",
+      "group": "Family"
+    },
+    {
+      "name": "Emilie Agreste",
+      "image": "",
+      "subtitle": "Adrien's mother",
+      "group": "Family"
+    },
+    {
+      "name": "Amélie Graham de Vanily",
+      "image": "",
+      "subtitle": "Félix's mother",
+      "group": "Family"
+    },
+    {
+      "name": "André Bourgeois",
+      "image": "",
+      "subtitle": "Mayor of Paris",
+      "group": "Supporting"
+    },
+    {
+      "name": "Audrey Bourgeois",
+      "image": "",
+      "subtitle": "Fashion critic",
+      "group": "Supporting"
+    },
+    {
+      "name": "Caline Bustier",
+      "image": "",
+      "subtitle": "Teacher",
+      "group": "Supporting"
+    },
+    {
+      "name": "Denis Damocles",
+      "image": "",
+      "subtitle": "School principal",
+      "group": "Supporting"
+    },
+    {
+      "name": "Armand D'Argencourt",
+      "image": "",
+      "subtitle": "Fencing teacher",
+      "group": "Supporting"
+    },
+    {
+      "name": "Master Fu",
+      "image": "",
+      "subtitle": "Guardian of the Miraculous",
+      "group": "Supporting"
+    },
+    {
+      "name": "Su-Han",
+      "image": "",
+      "subtitle": "Celestial Guardian",
+      "group": "Supporting"
+    },
+    {
+      "name": "Jagged Stone",
+      "image": "",
+      "subtitle": "Musician",
+      "group": "Supporting"
+    },
+    {
+      "name": "Anarka Couffaine",
+      "image": "",
+      "subtitle": "Musician",
+      "group": "Supporting"
+    },
+    {
+      "name": "Penny Rolling",
+      "image": "",
+      "subtitle": "Manager",
+      "group": "Supporting"
+    },
+    {
+      "name": "XY",
+      "image": "",
+      "subtitle": "Musician",
+      "group": "Supporting"
+    },
+    {
+      "name": "Bob Roth",
+      "image": "",
+      "subtitle": "Producer",
+      "group": "Supporting"
+    },
+    {
+      "name": "Ondine",
+      "image": "",
+      "subtitle": "Swimmer",
+      "group": "Supporting"
+    },
+    {
+      "name": "Aurore Beauréal",
+      "image": "",
+      "subtitle": "Stormy Weather",
+      "group": "Supporting"
+    },
+    {
+      "name": "Mireille Caquet",
+      "image": "",
+      "subtitle": "TV presenter",
+      "group": "Supporting"
+    },
+    {
+      "name": "Manon Chamack",
+      "image": "",
+      "subtitle": "The Puppeteer",
+      "group": "Supporting"
+    },
+    {
+      "name": "Nadja Chamack",
+      "image": "",
+      "subtitle": "Journalist",
+      "group": "Supporting"
+    },
+    {
+      "name": "Roger Raincomprix",
+      "image": "",
+      "subtitle": "Police officer",
+      "group": "Supporting"
+    },
+    {
+      "name": "Gorilla",
+      "image": "",
+      "subtitle": "Adrien's bodyguard",
+      "group": "Supporting"
+    },
+    {
+      "name": "Jalil Kubdel",
+      "image": "",
+      "subtitle": "The Pharaoh",
+      "group": "Supporting"
+    },
+    {
+      "name": "Alim Kubdel",
+      "image": "",
+      "subtitle": "Museum curator",
+      "group": "Supporting"
+    },
+    {
+      "name": "Jalil's sister Alix",
+      "image": "",
+      "subtitle": "Bunnyx",
+      "group": "Hero"
+    },
+    {
+      "name": "Fei Wu",
+      "image": "",
+      "subtitle": "Lady Dragon",
+      "group": "Special"
+    },
+    {
+      "name": "Jess Keynes",
+      "image": "",
+      "subtitle": "Eagle",
+      "group": "Special"
+    },
+    {
+      "name": "Aeon",
+      "image": "",
+      "subtitle": "Uncanny Valley",
+      "group": "Special"
+    },
+    {
+      "name": "Ladydragon",
+      "image": "",
+      "subtitle": "Renlings guardian",
+      "group": "Special"
+    },
+    {
+      "name": "Shadybug",
+      "image": "",
+      "subtitle": "Alternate Ladybug",
+      "group": "Special"
+    },
+    {
+      "name": "Claw Noir",
+      "image": "",
+      "subtitle": "Alternate Cat Noir",
+      "group": "Special"
+    },
+    {
+      "name": "Betterfly",
+      "image": "",
+      "subtitle": "Alternate Butterfly holder",
+      "group": "Special"
+    },
+    {
+      "name": "Jessica Keynes",
+      "image": "",
+      "subtitle": "Eagle",
+      "group": "Special"
+    },
+    {
+      "name": "Barbara Keynes",
+      "image": "",
+      "subtitle": "Knightowl",
+      "group": "Special"
+    },
+    {
+      "name": "Olympia Hill",
+      "image": "",
+      "subtitle": "Majestia",
+      "group": "Special"
+    },
+    {
+      "name": "Cash",
+      "image": "",
+      "subtitle": "Shanghai antagonist",
+      "group": "Special"
+    },
+    {
+      "name": "Tomoe Tsurugi",
+      "image": "",
+      "subtitle": "Kagami's mother",
+      "group": "Supporting"
+    },
+    {
+      "name": "Socqueline Wang",
+      "image": "",
+      "subtitle": "Marinette's friend",
+      "group": "Supporting"
+    },
+    {
+      "name": "Cerise Bianca",
+      "image": "",
+      "subtitle": "Lila's alias",
+      "group": "Villain"
+    },
+    {
+      "name": "Sasha",
+      "image": "",
+      "subtitle": "Supporting character",
+      "group": "Supporting"
+    },
+    {
+      "name": "Wayhem",
+      "image": "",
+      "subtitle": "Adrien fan",
+      "group": "Supporting"
+    },
+    {
+      "name": "Vincent Aza",
+      "image": "",
+      "subtitle": "Photographer",
+      "group": "Supporting"
+    },
+    {
+      "name": "August",
+      "image": "",
+      "subtitle": "Gigantitan",
+      "group": "Supporting"
+    },
+    {
+      "name": "Chris Lahiffe",
+      "image": "",
+      "subtitle": "Nino's brother",
+      "group": "Family"
+    },
+    {
+      "name": "Ella Césaire",
+      "image": "",
+      "subtitle": "Alya's sister",
+      "group": "Family"
+    },
+    {
+      "name": "Etta Césaire",
+      "image": "",
+      "subtitle": "Alya's sister",
+      "group": "Family"
+    },
+    {
+      "name": "Otis Césaire",
+      "image": "",
+      "subtitle": "Alya's father",
+      "group": "Family"
+    },
+    {
+      "name": "Marlena Césaire",
+      "image": "",
+      "subtitle": "Alya's mother",
+      "group": "Family"
+    },
+    {
+      "name": "Mister Banana",
+      "image": "",
+      "subtitle": "Paris celebrity",
+      "group": "Supporting"
+    },
+    {
+      "name": "Froggy",
+      "image": "",
+      "subtitle": "Young Parisian",
+      "group": "Supporting"
+    },
+    {
+      "name": "Lê Chiến",
+      "image": "",
+      "subtitle": "Kim's mother",
+      "group": "Family"
+    },
+    {
+      "name": "Jean Duparc",
+      "image": "",
+      "subtitle": "Classmate",
+      "group": "Supporting"
+    },
+    {
+      "name": "Fred Haprèle",
+      "image": "",
+      "subtitle": "Mime",
+      "group": "Family"
+    },
+    {
+      "name": "Xavier Ramier",
+      "image": "",
+      "subtitle": "Mr. Pigeon",
+      "group": "Supporting"
+    },
+    {
+      "name": "Philippe",
+      "image": "",
+      "subtitle": "Ice-cream vendor",
+      "group": "Supporting"
+    },
+    {
+      "name": "André Glacier",
+      "image": "",
+      "subtitle": "Ice-cream vendor",
+      "group": "Supporting"
+    },
+    {
+      "name": "Clara Nightingale",
+      "image": "",
+      "subtitle": "Singer",
+      "group": "Supporting"
+    },
+    {
+      "name": "Harry Clown",
+      "image": "",
+      "subtitle": "Comedian",
+      "group": "Supporting"
+    },
+    {
+      "name": "Marianne Lenoir",
+      "image": "",
+      "subtitle": "Master Fu's partner",
+      "group": "Supporting"
+    },
+    {
+      "name": "Fu's teacher",
+      "image": "",
+      "subtitle": "Guardian",
+      "group": "Supporting"
+    },
+    {
+      "name": "Émilie Agreste",
+      "image": "",
+      "subtitle": "Adrien's mother",
+      "group": "Family"
+    },
+    {
+      "name": "Adrien's aunt Amélie",
+      "image": "",
+      "subtitle": "Graham de Vanily",
+      "group": "Family"
+    },
+    {
+      "name": "Nora Césaire",
+      "image": "",
+      "subtitle": "Anansi",
+      "group": "Supporting"
+    },
+    {
+      "name": "Vincent",
+      "image": "",
+      "subtitle": "Photographer",
+      "group": "Supporting"
+    },
+    {
+      "name": "Anansi",
+      "image": "",
+      "subtitle": "Akumatized villain",
+      "group": "Villain"
+    },
+    {
+      "name": "Volpina",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Antibug",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Lady WiFi",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Cat Blanc",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Queen Wasp",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Miracle Queen",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Stormy Weather",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Dark Cupid",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Timebreaker",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Reflekta",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "The Bubbler",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "The Collector",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Robostus",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Glaciator",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Wishmaker",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Psycomedian",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Gorizilla",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Qilin",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Frightningale",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Zombizou",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Sandboy",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Timetagger",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Oblivio",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Desperada",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Penalteam",
+      "image": "",
+      "subtitle": "Akumatized identity",
+      "group": "Villain"
+    },
+    {
+      "name": "Strike Back",
+      "image": "",
+      "subtitle": "Sentimonster",
+      "group": "Villain"
+    },
+    {
+      "name": "Sentibubbler",
+      "image": "",
+      "subtitle": "Sentimonster",
+      "group": "Villain"
+    },
+    {
+      "name": "Feast",
+      "image": "",
+      "subtitle": "Sentimonster",
+      "group": "Villain"
+    },
+    {
+      "name": "Optigami",
+      "image": "",
+      "subtitle": "Sentimonster",
+      "group": "Villain"
+    },
+    {
+      "name": "Kuro Neko",
+      "image": "",
+      "subtitle": "Alternate Cat holder",
+      "group": "Special"
     }
   ],
   "kwamis": [
     {
       "name": "Tikki",
       "image": "https://static.wikia.nocookie.net/lady-bug/images/c/c7/Tikki_%28S6%29_Square.png/revision/latest/scale-to-width-down/268?cb=20250212232157",
+      "concept": "Creation",
+      "miraculous": "Ladybug",
       "description": "Kwami of Creation.",
       "power": "Creation",
-      "miraculous": "Ladybug",
       "wiki": "Tikki"
+    },
+    {
+      "name": "Plagg",
+      "image": "",
+      "concept": "Destruction",
+      "miraculous": "Black Cat"
+    },
+    {
+      "name": "Nooroo",
+      "image": "",
+      "concept": "Transmission",
+      "miraculous": "Butterfly"
+    },
+    {
+      "name": "Duusu",
+      "image": "",
+      "concept": "Emotion",
+      "miraculous": "Peacock"
+    },
+    {
+      "name": "Wayzz",
+      "image": "",
+      "concept": "Protection",
+      "miraculous": "Turtle"
+    },
+    {
+      "name": "Trixx",
+      "image": "",
+      "concept": "Illusion",
+      "miraculous": "Fox"
+    },
+    {
+      "name": "Pollen",
+      "image": "",
+      "concept": "Action",
+      "miraculous": "Bee"
+    },
+    {
+      "name": "Mullo",
+      "image": "",
+      "concept": "Multiplication",
+      "miraculous": "Mouse"
+    },
+    {
+      "name": "Stompp",
+      "image": "",
+      "concept": "Determination",
+      "miraculous": "Ox"
+    },
+    {
+      "name": "Roaar",
+      "image": "",
+      "concept": "Elation",
+      "miraculous": "Tiger"
+    },
+    {
+      "name": "Fluff",
+      "image": "",
+      "concept": "Evolution",
+      "miraculous": "Rabbit"
+    },
+    {
+      "name": "Longg",
+      "image": "",
+      "concept": "Perfection",
+      "miraculous": "Dragon"
+    },
+    {
+      "name": "Sass",
+      "image": "",
+      "concept": "Intuition",
+      "miraculous": "Snake"
+    },
+    {
+      "name": "Kaalki",
+      "image": "",
+      "concept": "Migration",
+      "miraculous": "Horse"
+    },
+    {
+      "name": "Ziggy",
+      "image": "",
+      "concept": "Passion",
+      "miraculous": "Goat"
+    },
+    {
+      "name": "Xuppu",
+      "image": "",
+      "concept": "Derision",
+      "miraculous": "Monkey"
+    },
+    {
+      "name": "Orikko",
+      "image": "",
+      "concept": "Pretension",
+      "miraculous": "Rooster"
+    },
+    {
+      "name": "Barkk",
+      "image": "",
+      "concept": "Adoration",
+      "miraculous": "Dog"
+    },
+    {
+      "name": "Daizzi",
+      "image": "",
+      "concept": "Jubilation",
+      "miraculous": "Pig"
+    },
+    {
+      "name": "Gimmi",
+      "image": "",
+      "concept": "Reality",
+      "miraculous": "Ladybug + Black Cat fusion"
+    },
+    {
+      "name": "Liiri",
+      "image": "",
+      "concept": "Freedom",
+      "miraculous": "Eagle"
     }
   ]
 }
