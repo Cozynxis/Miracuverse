@@ -50,10 +50,9 @@ def parse_names():
     text = CATALOG.read_text(encoding="utf-8")
     result = {}
     for kind in ("CHARACTERS", "KWAMIS"):
-        match = re.search(r"window\.MV_" + kind + r"\s*=\s*\[(.*?)\]\.?(?:filter|map)", text, re.S)
-        if not match:
-            raise RuntimeError("Cannot find MV_" + kind + " in catalog.js")
-        names = re.findall(r'^\s*\[\s*"([^"]+)"', match.group(1), re.M)
+        start = text.index("window.MV_" + kind + "=[")
+        body = text[start:].split("].map(", 1)[0] if kind == "KWAMIS" else text[start:].split("].filter(", 1)[0]
+        names = re.findall(r'^\s*\[\s*"([^"]+)"', body, re.M)
         if not names:
             raise RuntimeError("No names for " + kind)
         result["characters" if kind == "CHARACTERS" else "kwamis"] = list(dict.fromkeys(names))
