@@ -123,6 +123,26 @@ def read_episode_endcard(session, title):
                         if url: return url
         except (requests.RequestException, ValueError, KeyError):
             pass
+    # Episode gallery may not have a labeled end-card section.
+    # For Mister Agreste, use its official wiki article image as a fallback.
+    if title.lower().replace(".", "") in ("mister agreste", "mr agreste"):
+        try:
+            r = session.get(BASE + "/api.php", params={
+                "action": "parse", "page": "Mister Agreste", "prop": "text",
+                "format": "json", "formatversion": "2"
+            }, headers=HEADERS, timeout=25)
+            r.raise_for_status()
+            data = r.json()
+            html = data.get("parse", {}).get("text", "")
+            if isinstance(html, dict): html = html.get("*", "")
+            soup = BeautifulSoup(html, "html.parser")
+            for img in soup.select("aside img, .portable-infobox img"):
+                alt = img.get("alt", "").lower()
+                if "mister agreste" in alt:
+                    image = full_image(img)
+                    if image: return image
+        except (requests.RequestException, ValueError, KeyError):
+            pass
     return None
 
 SPECIAL_GALLERIES = {
@@ -210,7 +230,7 @@ def main():
                     if not img:
                         img = next((url for caption, url in matches.items()
                                     if caption == n or (len(n) > 5 and (caption.startswith(n + " ") or n.startswith(caption + " ")))), None)
-                    if not img and key not in result:
+                    if not img and (key not in result or key == "6-9"):
                         img = read_episode_endcard(session, title)
                         if img:
                             print(f"Season {season} episode {i}: recovered from episode gallery", flush=True)
