@@ -1,0 +1,1 @@
+.poster{position:relative}.episode-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s ease}.episode-card:hover .episode-image{transform:scale(1.07)}.poster .tag{z-index:1}.detail-poster{overflow:hidden}.detail-image{width:100%;height:100%;object-fit:cover}
